@@ -261,7 +261,7 @@
                         tooltip.transition()
                             .duration(200)
                             .style("opacity", .9)
-                        tooltip.html(`${d['properties']['TOWN']} <br> ${d['properties']['POPCH00_10']}`)
+                        tooltip.html(`${d['properties']['TOWN']} <br> Population Change (1980-2010): ${d['properties']['POPCH00_10']}`)
                             .style("left", m.clientX + "px")
                             .style("top", m.clientY + "px");
                     })
@@ -313,7 +313,7 @@
                         tooltip.transition()
                             .duration(200)
                             .style("opacity", .9)
-                        tooltip.html(`${d['properties']['TOWN']} <br> ${d['properties']["FIPS_STCO"]}`)
+                        tooltip.html(`${d['properties']['TOWN']} <br>Gini Index in 2019: ${d['properties']["FIPS_STCO"]}`)
                             .style("left", m.clientX + "px")
                             .style("top", m.clientY + "px");
                     })
