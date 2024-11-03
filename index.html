@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="d3.js"></script>
-    <script src="d3jstopojson.v1.js"></script>
+    <script src="./libs/d3.js"></script>
+    <script src="./libs/d3jstopojson.v1.js"></script>
     <title>MA Map</title>
     <style>
          body {
@@ -28,6 +28,8 @@
             font-size: medium;
             border-radius: 2px;
             line-height: 1;
+            pointer-events: none; /* Prevent mouse events on tooltip */
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
         }
 
         #tooltip_2 {
@@ -42,6 +44,8 @@
             font-size: medium;
             border-radius: 2px;
             line-height: 1;
+            pointer-events: none; /* Prevent mouse events on tooltip */
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
         }
 
         #tooltip_3 {
@@ -56,6 +60,8 @@
             font-size: medium;
             border-radius: 2px;
             line-height: 1;
+            pointer-events: none; /* Prevent mouse events on tooltip */
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
         }
         
         path {
@@ -100,23 +106,23 @@
 
            <!-- Map with title for Population 1980 -->
            <div class="map-container">
-            <h3>Actual Population in 1980</h3>
+            <h3>A. Actual Population in 1980</h3>
             <div id="tooltip_1"></div>
-            <div class="fig2"></div>
+            <div class="fig1"></div>
         </div>
 
         <!-- Map with title for Population Change 2000-2010 -->
         <div class="map-container">
-            <h3>Population change between 1980 and 2010 in each town</h3>
+            <h3>B. Population change between 1980 and 2010</h3>
             <div id="tooltip_2"></div>
-            <div class="fig3"></div>
+            <div class="fig2"></div>
         </div>
 
         <!-- Map with title for FIPS State County Code -->
         <div class="map-container">
-            <h3>Color code (Hue Channel) the map by Gini Index for each county</h3>
+            <h3>C. Gini Index for each county in 2019</h3>
             <div id="tooltip_3"></div>
-            <div class="fig4"></div>
+            <div class="fig3"></div>
         </div>
         
     </div>
@@ -145,9 +151,9 @@
         /*-------------------------------------------------------*/
 
         // a topojson file containing population of each town in different years
-        const MA_counties = "towns.topojson"
+        const MA_counties = "./data/towns.topojson"
             // gini index per county
-        const gini_index = "gini_index.csv"
+        const gini_index = "./data/gini_index.csv"
 
 
 
@@ -201,9 +207,9 @@
                     .attr("fill", d => colorInterpolator(logScale(d['properties']['POP1980'])))
                     .on("mouseenter", (m, d) => {
                         tooltip.transition()
-                            .duration(200)
+                            .duration(800)
                             .style("opacity", .9)
-                        tooltip.html(`${d['properties']['TOWN']} <br> ${d['properties']['POP1980']}`)
+                        tooltip.html(`${d['properties']['TOWN']} <br>Population in 1980: ${d['properties']['POP1980']}`)
                             .style("left", m.clientX + "px")
                             .style("top", m.clientY + "px");
                     })
@@ -322,9 +328,9 @@
             }
 
             // generateMap1(topology_data,".fig1",svgWidth,svgHeight)
-            generateMap2(topology_data,".fig2",svgWidth,svgHeight)
-            generateMap3(topology_data,".fig3",svgWidth,svgHeight)
-            generateMap4(topology_data,".fig4",svgWidth,svgHeight)
+            generateMap2(topology_data,".fig1",svgWidth,svgHeight)
+            generateMap3(topology_data,".fig2",svgWidth,svgHeight)
+            generateMap4(topology_data,".fig3",svgWidth,svgHeight)
         })
     </script>
 </body>
