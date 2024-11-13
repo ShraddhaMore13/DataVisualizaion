@@ -168,9 +168,7 @@
             ];
             const geoPath_generator = d3.geoPath()
                 .projection(projections[3].fitSize([width - margin, height - margin], geojson));
-             const colorInterpolator = d3.interpolateRgbBasis(['#fef0d9', '#fdcc8a', '#fc8d59', '#e34a33', '#b30000'].reverse());
-          
-           
+           const colorInterpolator = d3.interpolateRgbBasis(['#fef0d9', '#fdcc8a', '#fc8d59', '#e34a33', '#b30000'].reverse());
             const tooltip = d3.select("#tooltip_2");
             svg.selectAll("path")
                 .data(geojson.features)
@@ -206,14 +204,14 @@
         };
 
         const generateMap4 = (topo_data, csv_data, containerName, width, height, margin = 30) => {
-            
-              const giniMap = {};
+           
+            const giniIndexMap = {};
             csv_data.forEach(row => {
-                const fipsCode = row['id'].slice(-5);  // Extract the last 5 digits as FIPS code
-                const year = +row['year'];
-                const giniValue = parseFloat(row['Estimate!!Gini Index']);
-                if (!giniMap[fipsCode]) giniMap[fipsCode] = [];
-                giniMap[fipsCode].push({ year, giniValue });
+            const fipsCode = row['id'].slice(-5);  
+               const year = +row['year'];
+               const giniValue = parseFloat(row['Estimate!!Gini Index']);
+              if (!giniIndexMap[fipsCode]) giniIndexMap[fipsCode] = [];
+              giniIndexMap[fipsCode].push({ year, giniValue });
             });
 
            
@@ -236,22 +234,22 @@
                 .projection(projections[3].fitSize([width - margin, height - margin], geojson));
                 const colorInterpolator = d3.interpolateRgbBasis(['#ffffb2', '#fecc5c', '#fd8d3c', '#f03b20', '#bd0026']);
                 const csv_data_year = csv_data.filter(d => d.year === "2019");
-            const giniIndexMap = {};
+            
             csv_data_year.forEach(row => {
-                const fipsCode = row['id'].slice(-5);  // Extract the last 5 digits as FIPS code
+                const fipsCode = row['id'].slice(-5);  
                 const year = +row['year'];
                 const giniValue = parseFloat(row['Estimate!!Gini Index']);
-                if (!giniMap[fipsCode]) giniMap[fipsCode] = [];
-                giniMap[fipsCode].push({ year, giniValue });
+                if (!giniIndexMap[fipsCode]) giniIndexMap[fipsCode] = [];
+                giniIndexMap[fipsCode].push({ year, giniValue });
             });
 
             const features = topojson.feature(topology_data, topology_data.objects.ma).features;
             features.forEach(feature => {
                 const fipsCode = feature.properties['FIPS_STCO'];
-                feature.properties['Gini_Index'] = giniMap[fipsCode] || [];
+                feature.properties['Gini_Index'] = giniIndexMap[fipsCode] || [];
             });
             const linearScale = d3.scaleLinear()
-                .domain([0.3, 0.6]); // Gini Index range for color scaling
+                .domain([0.3, 0.6]); 
 
             const tooltip = d3.select("#tooltip_3");
             svg.selectAll("path")
@@ -270,7 +268,7 @@
             Gini Index (Latest): ${d.properties['Gini_Index'].length ? d.properties['Gini_Index'][d.properties['Gini_Index'].length - 1].giniValue : 'Data not available'}
         `).style("left", m.clientX + "px").style("top", m.clientY + "px");
 
-         // Add a small line chart to display Gini Index changes over time
+        
             const lineSvg = tooltip.append("svg")
                 .attr("width", 150)
                 .attr("height", 50)
@@ -281,7 +279,7 @@
                 .range([0, 150]);
 
             const yScale = d3.scaleLinear()
-                .domain([0.3, 0.6]) // assuming Gini Index values range from 0.3 to 0.6
+                .domain([0.3, 0.6]) 
                 .range([50, 0]);
 
             const line = d3.line()
@@ -295,8 +293,15 @@
                 .attr("stroke-width", 1.5)
                 .attr("d", line);
             })
-            .on("mousemove", () => tooltip.style("opacity", .9))
-            .on("mouseout", () => tooltip.transition().duration(400).style("opacity", 0).select(".line-chart").remove());
+            .on("mousemove", () => tooltip
+            .style("opacity", .9)
+        )
+            .on("mouseout", () => tooltip
+            .transition()
+            .duration(400)
+            .style("opacity", 0)
+            .select(".line-chart").remove()
+        );
 
               
         };
